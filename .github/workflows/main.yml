@@ -1,0 +1,52 @@
+name: Podman Repro
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test-podman-sdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22" # Or whatever your project uses
+          cache: true
+
+      - name: Set up Podman Socket
+        run: |
+          sudo mkdir -p /run/user/1001/podman
+          sudo chown -R 1001:1001 /run/user/1001
+
+          # Persist ENV for the Go runs
+          echo "XDG_RUNTIME_DIR=/run/user/1001" >> $GITHUB_ENV
+          echo "DOCKER_HOST=unix:///run/user/1001/podman/podman.sock" >> $GITHUB_ENV
+
+          podman system service -t 0 &
+
+          while [ ! -S "/run/user/1001/podman/podman.sock" ]; do
+            echo "Waiting for podman socket..."
+            sleep 1
+          done
+          echo "Podman socket active!"
+
+      - name: RUN 1 - Build Phase
+        run: |
+          echo "Running Go app for the first time. It should NOT find the image and BUILD it."
+          go run main.go
+
+      - name: Debug - Print Podman Storage State
+        run: |
+          echo "--- Raw Podman Images CLI ---"
+          podman images
+          echo "-----------------------------"
+
+      - name: RUN 2 - Check Phase
+        run: |
+          echo "Running Go app for the second time. It SHOULD find the image and SKIP building."
+          go run main.go
