@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/rs/zerolog/log"
 	buildahDefine "go.podman.io/buildah/define"
 	"go.podman.io/podman/v6/pkg/bindings"
 	"go.podman.io/podman/v6/pkg/bindings/images"
@@ -18,7 +17,6 @@ const TargetTag = "repro-image:v1"
 
 func podmanClient() (context.Context, error) {
 	uri := fmt.Sprintf("unix:///run/user/%d/podman/podman.sock", os.Geteuid())
-	log.Debug("podman socket", "uri", uri)
 	c, err := bindings.NewConnection(context.Background(), uri)
 	if err != nil {
 		return nil, err

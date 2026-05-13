@@ -3,7 +3,6 @@ module repro
 go 1.25.9
 
 require (
-	github.com/rs/zerolog v1.35.1
 	go.podman.io/buildah v1.42.1-0.20260501153811-377cf64e213b
 	go.podman.io/podman/v6 v6.0.0-20260513101819-64284222af1b
 )
