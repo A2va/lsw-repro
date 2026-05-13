@@ -38,7 +38,7 @@ jobs:
       - name: RUN 1 - Build Phase
         run: |
           echo "Running Go app for the first time. It should NOT find the image and BUILD it."
-          go run main.go -tags "containers_image_openpgp exclude_graphdriver_btrfs exclude_graphdriver_devicemapper"
+          go run -tags "containers_image_openpgp exclude_graphdriver_btrfs exclude_graphdriver_devicemapper" main.go
 
       - name: Debug - Print Podman Storage State
         run: |
@@ -49,4 +49,4 @@ jobs:
       - name: RUN 2 - Check Phase
         run: |
           echo "Running Go app for the second time. It SHOULD find the image and SKIP building."
-          go run main.go -tags "containers_image_openpgp exclude_graphdriver_btrfs exclude_graphdriver_devicemapper"
+          go run -tags "containers_image_openpgp exclude_graphdriver_btrfs exclude_graphdriver_devicemapper" main.go
