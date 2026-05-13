@@ -90,9 +90,9 @@ func checkAPIList(ctx context.Context) bool {
 				cleanTag = tag[idx+1:]
 			}
 
-			fmt.Printf("tag: %s", cleanTag)
+			fmt.Print("tag: %s\n", cleanTag)
 
-			if tag == cleanTag {
+			if cleanTag == TargetTag {
 				return true
 			}
 		}
