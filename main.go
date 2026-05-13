@@ -7,11 +7,11 @@ import (
 	"os/exec"
 	"strings"
 
-	buildahDefine "github.com/containers/buildah/define"
-	"github.com/containers/podman/v6/pkg/bindings"
-	"github.com/containers/podman/v6/pkg/bindings/images"
-	"github.com/containers/podman/v6/pkg/domain/entities/types"
 	"github.com/rs/zerolog/log"
+	buildahDefine "go.podman.io/buildah/define"
+	"go.podman.io/podman/v6/pkg/bindings"
+	"go.podman.io/podman/v6/pkg/bindings/images"
+	"go.podman.io/podman/v6/pkg/domain/entities/types"
 )
 
 const TargetTag = "repro-image:v1"
